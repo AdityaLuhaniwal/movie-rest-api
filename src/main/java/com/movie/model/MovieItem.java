@@ -1,23 +1,25 @@
 package com.movie.model;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 
 public class MovieItem {
 
     @NotNull(message = "Id is required")
+    @Positive(message = "Id must be a positive number")
     private Long id;
 
     @NotBlank(message = "Movie name is required")
+    @Size(min = 2, max = 100, message = "Movie name must be between 2 and 100 characters")
     private String name;
 
     @NotBlank(message = "Description is required")
+    @Size(min = 5, max = 500, message = "Description must be between 5 and 500 characters")
     private String description;
 
+    @Size(max = 50, message = "Genre must not exceed 50 characters")
     private String genre;
 
-    public MovieItem() {
-    }
+    public MovieItem() {}
 
     public MovieItem(Long id, String name, String description, String genre) {
         this.id = id;
@@ -26,7 +28,8 @@ public class MovieItem {
         this.genre = genre;
     }
 
-    // getters and setters
+    // ✅ getters & setters (IMPORTANT)
+
     public Long getId() {
         return id;
     }

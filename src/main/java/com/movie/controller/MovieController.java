@@ -3,6 +3,7 @@ package com.movie.controller;
 import com.movie.model.MovieItem;
 import com.movie.repository.MovieRepository;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,12 +27,14 @@ public class MovieController {
         return ResponseEntity.ok(repository.save(movie));
     }
 
+
     // 2️⃣ Add movies in bulk
     @PostMapping("/bulk")
     public ResponseEntity<List<MovieItem>> addMoviesBulk(
             @Valid @RequestBody List<MovieItem> movies) {
 
-        return ResponseEntity.ok(repository.saveAll(movies));
+        List<MovieItem> savedMovies = repository.saveAll(movies);
+        return new ResponseEntity<>(savedMovies, HttpStatus.CREATED);
     }
 
     // 3️⃣ Get all movies
@@ -42,10 +45,8 @@ public class MovieController {
 
     // 4️⃣ Get movie by id
     @GetMapping("/{id}")
-    public ResponseEntity<?> getMovieById(@PathVariable Long id) {
-
-        return repository.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<MovieItem> getMovieById(@PathVariable Long id) {
+        return ResponseEntity.ok(repository.findById(id));
     }
+
 }
